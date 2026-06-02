@@ -8,7 +8,7 @@ export const CITIES = [
     h1: 'Junk Removal in Nampa, ID',
     intro: "Proper Rubbish hauls junk from Nampa homes, garages, and properties — fast. Flat-rate pricing, same-week scheduling, and we leave your place cleaner than we found it.",
     faqs: [
-      { q: 'How much does junk removal cost in Nampa, ID?', a: "Flat-rate volume pricing. Minimum pickup (up to 2 cubic yards) starts at $165. A quarter truckload runs $225–$275, half truckload $400–$450, and a full 15 cu yd truckload is $1,100. Single items like mattresses are $75." },
+      { q: 'How much does junk removal cost in Nampa, ID?', a: "Flat-rate volume pricing. Minimum pickup (up to 2 cubic yards) starts at $165. A quarter truckload runs $225–$275, half truckload $400–$450, and a full 15 cu yd truckload is $900–$1,100. Single items like mattresses are $75." },
       { q: 'Do you serve all of Nampa including the south side?', a: "Yes — all of Nampa including South Nampa, downtown, and neighborhoods near Karcher Road. We're Canyon County locals, so Nampa pickups are fast and affordable." },
       { q: 'How fast can you pick up junk in Nampa?', a: "Usually same week, often within 24–48 hours. Call or text (208) 530-2729 and we'll get you on the schedule right away." },
       { q: 'Do you offer bin cleaning in Nampa?', a: "Yes — $65 one-time deep clean, $35/visit quarterly, or $25/month on our monthly route. Both bins, we come to you, no contract." },
@@ -24,7 +24,7 @@ export const CITIES = [
     h1: 'Junk Removal in Caldwell, ID',
     intro: "Proper Rubbish serves Caldwell with fast, affordable junk removal and bin cleaning. We're Canyon County based — that means quick scheduling and no long haul fees.",
     faqs: [
-      { q: 'How much does junk removal cost in Caldwell, ID?', a: "Flat-rate volume pricing: minimum pickup starts at $165, quarter truckload $225–$275, half truckload $400–$450, full truckload $1,100. Single items like sofas and mattresses priced separately." },
+      { q: 'How much does junk removal cost in Caldwell, ID?', a: "Flat-rate volume pricing: minimum pickup starts at $165, quarter truckload $225–$275, half truckload $400–$450, full truckload $900–$1,100. Single items like sofas and mattresses priced separately." },
       { q: 'Do you serve all of Caldwell?', a: "Yes — all of Caldwell including areas near Karcher Mall, Indian Creek, and rural Canyon County properties. Canyon County is our home base." },
       { q: 'Can you haul away appliances in Caldwell?', a: "Yes — fridges start at $75–$125, washer/dryer $75 each. We handle full appliance haul-away." },
       { q: 'Do you do estate cleanouts in Caldwell?', a: "Yes — full estate and property cleanouts are one of our most common jobs. We clear the whole property in one trip when possible." },
@@ -40,7 +40,7 @@ export const CITIES = [
     h1: 'Junk Removal in Boise, ID',
     intro: "Proper Rubbish is Boise's junk removal and bin cleaning crew. We serve every Boise neighborhood — North End, South Boise, East End, Bench, and beyond — with flat rates and same-week pickups.",
     faqs: [
-      { q: 'How much does junk removal cost in Boise, ID?', a: "Flat-rate pricing based on load size. Minimum pickup starts at $165. Quarter truckload $225–$275, half truckload $400–$450, three-quarter truckload $600–$700, full 15 cu yd truckload $1,100." },
+      { q: 'How much does junk removal cost in Boise, ID?', a: "Flat-rate pricing based on load size. Minimum pickup starts at $165. Quarter truckload $225–$275, half truckload $400–$450, three-quarter truckload $600–$700, full 15 cu yd truckload $900–$1,100." },
       { q: 'Do you serve all Boise neighborhoods?', a: "Yes — North End, Bench, East End, South Boise, Downtown, West Boise, Harris Ranch, and everywhere in between." },
       { q: 'How quickly can you pick up junk in Boise?', a: "Typically same week, often 24–48 hours. Call or text (208) 530-2729." },
       { q: 'Do you offer bin cleaning in Boise?', a: "Yes — $65 one-time, $35/visit quarterly route, or $25/month monthly route. Both bins, no contract." },
@@ -56,7 +56,7 @@ export const CITIES = [
     h1: 'Junk Removal in Meridian, ID',
     intro: "Proper Rubbish hauls junk from Meridian homes, garages, and commercial properties. Fast scheduling, flat rates, and a crew that shows up on time.",
     faqs: [
-      { q: 'How much does junk removal cost in Meridian, ID?', a: "Flat-rate volume pricing: minimum pickup starts at $165, quarter truckload $225–$275, half truckload $400–$450, full truckload $1,100." },
+      { q: 'How much does junk removal cost in Meridian, ID?', a: "Flat-rate volume pricing: minimum pickup starts at $165, quarter truckload $225–$275, half truckload $400–$450, full truckload $900–$1,100." },
       { q: 'Do you serve all of Meridian including Eagle Road and Chinden?', a: "Yes — all of Meridian including East Meridian, Ten Mile, and subdivisions throughout the city." },
       { q: 'Can you do a garage cleanout in Meridian?', a: "Garage cleanouts are one of our most popular services. We sort, haul, and sweep up when we're done." },
       { q: 'How fast can you pick up in Meridian?', a: "Usually same week. Call (208) 530-2729 and we'll get you scheduled." },
@@ -72,7 +72,7 @@ export const CITIES = [
     h1: 'Junk Removal in Eagle, ID',
     intro: "Proper Rubbish serves Eagle, ID with flat-rate pricing and fast scheduling across Treasure Valley.",
     faqs: [
-      { q: 'How much does junk removal cost in Eagle, ID?', a: "Minimum pickup starts at $165. Quarter truckload $225–$275, half truckload $400–$450, full truckload $1,100." },
+      { q: 'How much does junk removal cost in Eagle, ID?', a: "Minimum pickup starts at $165. Quarter truckload $225–$275, half truckload $400–$450, full truckload $900–$1,100." },
       { q: 'Do you serve Eagle including Edgewood and Hill Road area?', a: "Yes — all Eagle neighborhoods including rural properties on the outskirts." },
       { q: 'How fast can you pick up junk in Eagle?', a: "Typically same week. Call or text (208) 530-2729." },
       { q: 'Do you offer bin cleaning in Eagle?', a: "Yes — $65 one-time, $35 quarterly, $25/month. Both bins, no contract." }
@@ -87,7 +87,7 @@ export const CITIES = [
     h1: 'Junk Removal in Star, ID',
     intro: "Proper Rubbish hauls junk in Star, ID — flat-rate pricing, same-week pickup, and a crew that gets the job done right.",
     faqs: [
-      { q: 'How much does junk removal cost in Star, ID?', a: "Minimum pickup starts at $165. Quarter truckload $225–$275, half truckload $400–$450, full truckload $1,100." },
+      { q: 'How much does junk removal cost in Star, ID?', a: "Minimum pickup starts at $165. Quarter truckload $225–$275, half truckload $400–$450, full truckload $900–$1,100." },
       { q: 'How fast can you pick up in Star?', a: "Usually same week. Call (208) 530-2729." },
       { q: 'Do you offer bin cleaning in Star, ID?', a: "Yes — $65 one-time, $35 quarterly, $25/month. Both bins." }
     ]
@@ -101,7 +101,7 @@ export const CITIES = [
     h1: 'Junk Removal in Kuna, ID',
     intro: "Proper Rubbish serves Kuna with fast junk removal and bin cleaning. Flat rates, same-week scheduling.",
     faqs: [
-      { q: 'How much does junk removal cost in Kuna, ID?', a: "Minimum pickup starts at $165. Quarter truckload $225–$275, half $400–$450, full truckload $1,100." },
+      { q: 'How much does junk removal cost in Kuna, ID?', a: "Minimum pickup starts at $165. Quarter truckload $225–$275, half $400–$450, full truckload $900–$1,100." },
       { q: 'How fast can you pick up in Kuna?', a: "Usually same week. Call (208) 530-2729." },
       { q: 'Do you offer bin cleaning in Kuna?', a: "Yes — $65 one-time, $35 quarterly, $25/month. Both bins." }
     ]
@@ -115,7 +115,7 @@ export const CITIES = [
     h1: 'Junk Removal in Middleton, ID',
     intro: "Proper Rubbish serves Middleton with fast, flat-rate junk removal and bin cleaning. Canyon County is our home base — that means quick scheduling and local pricing.",
     faqs: [
-      { q: 'How much does junk removal cost in Middleton, ID?', a: "Flat-rate volume pricing: minimum pickup starts at $165, quarter truckload $225–$275, half truckload $400–$450, full truckload $1,100. We quote you upfront — no surprises." },
+      { q: 'How much does junk removal cost in Middleton, ID?', a: "Flat-rate volume pricing: minimum pickup starts at $165, quarter truckload $225–$275, half truckload $400–$450, full truckload $900–$1,100. We quote you upfront — no surprises." },
       { q: 'Do you serve all of Middleton?', a: "Yes — all of Middleton including rural properties and acreage. Canyon County is our home base so Middleton pickups are fast and straightforward." },
       { q: 'How fast can you pick up in Middleton?', a: "Usually same week, often 24–48 hours. Call or text (208) 530-2729 and we'll get you scheduled." },
       { q: 'Do you offer bin cleaning in Middleton?', a: "Yes — $65 one-time, $35 quarterly, $25/month. Both bins, no contract. We come to you." }
@@ -130,7 +130,7 @@ export const CITIES = [
     h1: 'Junk Removal in Garden City, ID',
     intro: "Proper Rubbish serves Garden City with flat-rate junk removal and bin cleaning. Same-week scheduling, on-time crew.",
     faqs: [
-      { q: 'How much does junk removal cost in Garden City, ID?', a: "Minimum pickup starts at $165. Quarter truckload $225–$275, half $400–$450, full $1,100." },
+      { q: 'How much does junk removal cost in Garden City, ID?', a: "Minimum pickup starts at $165. Quarter truckload $225–$275, half $400–$450, full $900–$1,100." },
       { q: 'How fast can you pick up in Garden City?', a: "Usually same week. Call (208) 530-2729." },
       { q: 'Do you offer bin cleaning in Garden City?', a: "Yes — $65 one-time, $35 quarterly, $25/month. Both bins." }
     ]
