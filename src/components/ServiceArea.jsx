@@ -1,6 +1,14 @@
 const CITIES = [
-  'Boise', 'Meridian', 'Nampa', 'Eagle', 'Star', 'Caldwell',
-  'Kuna', 'Garden City', 'Middleton', 'Emmett',
+  { name: 'Boise', href: '/junk-removal-boise-id' },
+  { name: 'Meridian', href: '/junk-removal-meridian-id' },
+  { name: 'Nampa', href: '/junk-removal-nampa-id' },
+  { name: 'Eagle', href: '/junk-removal-eagle-id' },
+  { name: 'Star', href: '/junk-removal-star-id' },
+  { name: 'Caldwell', href: '/junk-removal-caldwell-id' },
+  { name: 'Kuna', href: '/junk-removal-kuna-id' },
+  { name: 'Garden City', href: '/junk-removal-garden-city-id' },
+  { name: 'Middleton' },
+  { name: 'Emmett' },
 ];
 
 export default function ServiceArea() {
@@ -16,11 +24,11 @@ export default function ServiceArea() {
           </p>
         </div>
         <div style={s.grid}>
-          {CITIES.map(city => (
-            <div key={city} style={s.chip}>
+          {CITIES.map((city) => (
+            <a key={city.name} href={city.href || 'tel:+12085302729'} style={s.chip}>
               <span style={s.dot} />
-              <span style={s.cityName}>Junk Removal {city}, ID</span>
-            </div>
+              <span style={s.cityName}>Junk Removal {city.name}, ID</span>
+            </a>
           ))}
         </div>
         <p style={s.note}>
@@ -39,7 +47,7 @@ const s = {
   h2: { fontFamily: 'var(--font-display)', fontSize: 'clamp(28px,3.6vw,46px)', lineHeight: 1.05, color: 'var(--ink-900)', margin: '0 0 16px' },
   sub: { fontFamily: 'var(--font-sans)', fontSize: 17, lineHeight: 1.6, color: 'var(--ink-700)', maxWidth: '54ch', margin: 0 },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14, marginBottom: 32 },
-  chip: { display: 'flex', alignItems: 'center', gap: 12, background: 'var(--surface)', border: '1px solid var(--paper-300)', borderRadius: 'var(--radius-md)', padding: '14px 18px', boxShadow: 'var(--shadow-sm)' },
+  chip: { display: 'flex', alignItems: 'center', gap: 12, background: 'var(--surface)', border: '1px solid var(--paper-300)', borderRadius: 'var(--radius-md)', padding: '14px 18px', boxShadow: 'var(--shadow-sm)', textDecoration: 'none' },
   dot: { width: 8, height: 8, borderRadius: '50%', background: 'var(--red-500)', flex: 'none' },
   cityName: { fontFamily: 'var(--font-head)', fontWeight: 500, fontSize: 15, textTransform: 'uppercase', letterSpacing: '.03em', color: 'var(--ink-900)' },
   note: { fontFamily: 'var(--font-sans)', fontSize: 15, color: 'var(--ink-700)', margin: 0 },

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Icon from './Icon';
 
 const SERVICES = [
@@ -35,20 +35,15 @@ function buildSms(service, sel) {
 }
 
 export default function QuoteFlow({ open, onClose, initialService }) {
-  const [service, setService] = useState(null);
-  const [step, setStep]       = useState(0);
-  const [sel, setSel]         = useState(null);
-
-  useEffect(() => {
-    if (open) {
-      const s = initialService === 'bin' || initialService === 'junk' ? initialService : null;
-      setService(s);
-      setStep(s ? 1 : 0);
-      setSel(null);
-    }
-  }, [open, initialService]);
-
   if (!open) return null;
+  return <QuoteModal key={initialService || 'start'} onClose={onClose} initialService={initialService} />;
+}
+
+function QuoteModal({ onClose, initialService }) {
+  const initial = initialService === 'bin' || initialService === 'junk' ? initialService : null;
+  const [service, setService] = useState(initial);
+  const [step, setStep]       = useState(initial ? 1 : 0);
+  const [sel, setSel]         = useState(null);
 
   const back = (toStep, clearSel) => () => {
     if (clearSel) setSel(null);

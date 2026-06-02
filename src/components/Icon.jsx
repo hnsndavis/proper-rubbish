@@ -1,6 +1,4 @@
-import { useEffect, useRef } from 'react';
 import * as LucideIcons from 'lucide-react';
-import { createElement } from 'react';
 
 export default function Icon({ name, size = 22, stroke = 2, className, style }) {
   // Convert kebab-case name to PascalCase for lucide-react

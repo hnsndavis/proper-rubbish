@@ -22,16 +22,16 @@ export default function Header({ onQuote }) {
       transition: 'background .3s var(--ease-out), border-color .3s var(--ease-out)',
     }}>
       <div style={s.bar}>
-        <a href="#" style={s.lockup}>
+        <a href="/" style={s.lockup}>
           <img src={sealBadge} alt="Proper Rubbish" style={{ width: 46, height: 46 }} />
           <span style={s.wm}>PROPER RUBBISH</span>
         </a>
         <nav style={s.nav}>
           {[
-            { l: 'Services', href: '#junk' },
-            { l: 'Bin Cleaning', href: '#bin-cleaning' },
-            { l: 'How it works', href: '#how-it-works' },
-            { l: 'Service area', href: '#service-area' },
+            { l: 'Services', href: '/#junk' },
+            { l: 'Bin Cleaning', href: '/#bin-cleaning' },
+            { l: 'How it works', href: '/#how-it-works' },
+            { l: 'Service area', href: '/#service-area' },
           ].map((n) => (
             <a key={n.l} href={n.href} style={s.link}>{n.l}</a>
           ))}

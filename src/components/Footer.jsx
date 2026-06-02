@@ -1,6 +1,31 @@
 import Icon from './Icon';
 import patchOval from '../assets/patch-oval.svg';
 
+const FOOTER_COLUMNS = [
+  {
+    h: 'Services',
+    items: [
+      { label: 'Property cleanouts', href: '/#junk' },
+      { label: 'Garage purges', href: '/#junk' },
+      { label: 'Furniture removal', href: '/#junk' },
+      { label: 'Appliance haul-away', href: '/#junk' },
+      { label: 'Monthly bin cleaning', href: '/#bin-cleaning' },
+      { label: 'Estate cleanouts', href: '/#junk' },
+    ],
+  },
+  {
+    h: 'Service Area',
+    items: [
+      { label: 'Boise', href: '/junk-removal-boise-id' },
+      { label: 'Meridian', href: '/junk-removal-meridian-id' },
+      { label: 'Nampa', href: '/junk-removal-nampa-id' },
+      { label: 'Eagle', href: '/junk-removal-eagle-id' },
+      { label: 'Star', href: '/junk-removal-star-id' },
+      { label: 'Caldwell', href: '/junk-removal-caldwell-id' },
+    ],
+  },
+];
+
 export default function Footer({ onQuote }) {
   return (
     <footer>
@@ -23,13 +48,10 @@ export default function Footer({ onQuote }) {
             <p style={s.tag}>Proper job. Every time.</p>
             <p style={s.lic}>Licensed &amp; insured · Treasure Valley, ID</p>
           </div>
-          {[
-            { h: 'Services', items: ['Property cleanouts', 'Garage purges', 'Furniture removal', 'Appliance haul-away', 'Monthly bin cleaning', 'Estate cleanouts'] },
-            { h: 'Service Area', items: ['Boise', 'Meridian', 'Nampa', 'Eagle', 'Star', 'Caldwell'] },
-          ].map((c) => (
+          {FOOTER_COLUMNS.map((c) => (
             <div key={c.h} style={s.col}>
               <div style={s.colH}>{c.h}</div>
-              {c.items.map(it => <a key={it} href="#" style={s.colLink}>{it}</a>)}
+              {c.items.map((it) => <a key={it.label} href={it.href} style={s.colLink}>{it.label}</a>)}
             </div>
           ))}
           <div style={s.col}>
