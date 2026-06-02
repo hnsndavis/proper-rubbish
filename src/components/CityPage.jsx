@@ -149,7 +149,7 @@ const LOADS = [
   { label: '¼ Truckload',  desc: '~4 cu yd',       price: '$225–$275' },
   { label: '½ Truckload',  desc: '~8 cu yd',       price: '$400–$450' },
   { label: '¾ Truckload',  desc: '~11 cu yd',      price: '$600–$700' },
-  { label: 'Full Truck',   desc: '15 cu yd',       price: '$990–$1,320' },
+  { label: 'Full Truck',   desc: '15 cu yd',       price: '$1,100' },
 ];
 
 const WHY = [

@@ -11,7 +11,7 @@ const LOADS = [
   { id: 'q',   label: '¼ Truckload',   sub: '~4 cubic yards',            lo: 225,  hi: 275   },
   { id: 'h',   label: '½ Truckload',   sub: '~8 cubic yards',            lo: 400,  hi: 450   },
   { id: 'tq',  label: '¾ Truckload',   sub: '~11 cubic yards',           lo: 600,  hi: 700   },
-  { id: 'f',   label: 'Full Truck',    sub: '15 cubic yards',            lo: 990,  hi: 1320  },
+  { id: 'f',   label: 'Full Truck',    sub: '15 cubic yards',            lo: 1100, hi: 1100  },
 ];
 
 const PLANS = [
