@@ -1,70 +1,79 @@
 import { useState, useEffect } from 'react';
 import Icon from './Icon';
 
-const SERVICES_CHOICE = [
-  { id: 'junk', icon: 'truck', label: 'Junk Removal', sub: 'One-time haul', meta: 'Flat price, same week' },
-  { id: 'bin', icon: 'trash-2', label: 'Bin Cleaning', sub: 'Monthly route', meta: '$25/mo · both bins' },
+const SERVICES = [
+  { id: 'junk', icon: 'truck',   label: 'Junk Removal',  sub: 'One-time haul',      meta: 'Volume-based pricing' },
+  { id: 'bin',  icon: 'trash-2', label: 'Bin Cleaning',  sub: 'Sanitize your bins', meta: 'Monthly or one-time'  },
 ];
-const JOBS = [
-  { id: 'single',    icon: 'package',      label: 'Single item',        base: 89  },
-  { id: 'furniture', icon: 'sofa',         label: 'Furniture',          base: 149 },
-  { id: 'garage',    icon: 'warehouse',    label: 'Garage purge',       base: 289 },
-  { id: 'appliance', icon: 'refrigerator', label: 'Appliance',          base: 119 },
-  { id: 'estate',    icon: 'key-round',    label: 'Estate cleanout',    base: 690 },
-  { id: 'debris',    icon: 'hammer',       label: 'Construction debris',base: 349 },
-];
+
 const LOADS = [
-  { id: 'min',     label: 'Single item', mult: 0.6 },
-  { id: 'quarter', label: '¼ truck',     mult: 1   },
-  { id: 'half',    label: '½ truck',     mult: 1.7 },
-  { id: 'full',    label: 'Full truck',  mult: 2.8 },
+  { id: 'min', label: 'Minimum Pickup', sub: 'Up to 1 sofa · ~2 cu yd',  lo: 165,  hi: null  },
+  { id: 'q',   label: '¼ Truckload',   sub: '~4 cubic yards',            lo: 225,  hi: 275   },
+  { id: 'h',   label: '½ Truckload',   sub: '~8 cubic yards',            lo: 400,  hi: 450   },
+  { id: 'tq',  label: '¾ Truckload',   sub: '~11 cubic yards',           lo: 600,  hi: 700   },
+  { id: 'f',   label: 'Full Truck',    sub: '15 cubic yards',            lo: 990,  hi: 1320  },
 ];
+
+const PLANS = [
+  { id: 'once', label: 'One-Time Deep Clean', sub: 'No commitment',       price: 65, unit: ''      },
+  { id: 'q',    label: 'Quarterly',           sub: 'Billed every 3 mo',   price: 35, unit: '/visit', badge: '' },
+  { id: 'mo',   label: 'Monthly',             sub: 'Best for families',   price: 25, unit: '/mo',   badge: 'Most popular' },
+];
+
+const PHONE = '+12085302729';
+const PHONE_DISPLAY = '(208) 530-2729';
+
+function priceDisplay(load) {
+  return load.hi ? `$${load.lo} – $${load.hi}` : `$${load.lo}`;
+}
+
+function buildSms(service, sel) {
+  const body = service === 'junk'
+    ? `Hi! I'd like to book a junk pickup — roughly a ${sel.label} (${sel.sub}). Your site quoted me ${priceDisplay(sel)}. When are you available?`
+    : `Hi! I'm interested in your ${sel.label} bin cleaning ($${sel.price}${sel.unit}). Can you add me to the route?`;
+  return `sms:${PHONE}?body=${encodeURIComponent(body)}`;
+}
 
 export default function QuoteFlow({ open, onClose, initialService }) {
   const [service, setService] = useState(null);
-  const [step, setStep] = useState(0);
-  const [job, setJob] = useState(null);
-  const [load, setLoad] = useState(LOADS[1]);
-  const [zip, setZip] = useState('');
-  const [name, setName] = useState('');
-  const [addr, setAddr] = useState('');
+  const [step, setStep]       = useState(0);
+  const [sel, setSel]         = useState(null);
 
   useEffect(() => {
     if (open) {
       const s = initialService === 'bin' || initialService === 'junk' ? initialService : null;
       setService(s);
       setStep(s ? 1 : 0);
-      setJob(null); setLoad(LOADS[1]); setZip(''); setName(''); setAddr('');
+      setSel(null);
     }
   }, [open, initialService]);
 
   if (!open) return null;
 
-  const price = job ? Math.round((job.base * load.mult) / 5) * 5 : 0;
-  const ticketNo = 'PJC-' + (2000 + (job ? job.label.length * 37 : 0) + load.mult * 10).toString().slice(0, 4);
-  const routeNo = 'RT-' + (700 + (zip ? Number(zip.slice(-2)) || 7 : 7)).toString();
-  const stepLabels = service === 'bin' ? ['Need', 'Your info', 'On the route'] : ['Need', 'Job', 'Details', 'Quote'];
-  const pickService = (id) => { setService(id); setStep(1); };
+  const back = (toStep, clearSel) => () => {
+    if (clearSel) setSel(null);
+    if (toStep === 0) setService(null);
+    setStep(toStep);
+  };
 
   return (
     <div style={s.overlay} onClick={onClose}>
-      <div className="pjc" style={s.modal} onClick={e => e.stopPropagation()}>
+      <div style={s.modal} onClick={e => e.stopPropagation()}>
+
+        {/* Header */}
         <div style={s.head}>
-          <div style={s.steps}>
-            {stepLabels.map((l, i) => (
-              <span key={l} style={{ ...s.stepDot, ...(i <= step ? s.stepDotOn : {}) }}>{l}</span>
-            ))}
-          </div>
+          <span style={s.brand}>Proper Rubbish</span>
           <button style={s.close} onClick={onClose} aria-label="Close"><Icon name="x" size={18} /></button>
         </div>
 
+        {/* Step 0 — service picker */}
         {step === 0 && (
           <div style={s.body}>
-            <h3 style={s.h3}>What do you need?</h3>
+            <h3 style={s.h3}>What can we help with?</h3>
             <div style={s.serviceGrid}>
-              {SERVICES_CHOICE.map((sv) => (
+              {SERVICES.map(sv => (
                 <button key={sv.id} style={s.serviceBtn}
-                  onClick={() => pickService(sv.id)}
+                  onClick={() => { setService(sv.id); setStep(1); }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--red-500)'; e.currentTarget.style.background = '#FCEFE6'; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--paper-300)'; e.currentTarget.style.background = 'var(--surface)'; }}>
                   <span style={s.serviceIcon}><Icon name={sv.icon} size={32} stroke={1.6} /></span>
@@ -74,182 +83,162 @@ export default function QuoteFlow({ open, onClose, initialService }) {
                 </button>
               ))}
             </div>
+            <p style={s.orCall}>Or just call/text: <a href={`tel:${PHONE}`} style={s.phoneLink}>{PHONE_DISPLAY}</a></p>
           </div>
         )}
 
+        {/* Junk — Step 1: pick load size */}
         {service === 'junk' && step === 1 && (
           <div style={s.body}>
-            <h3 style={s.h3}>What needs to go?</h3>
-            <div style={s.jobGrid}>
-              {JOBS.map((j) => (
-                <button key={j.id} style={{ ...s.jobBtn, ...(job?.id === j.id ? s.jobBtnOn : {}) }}
-                  onClick={() => { setJob(j); setStep(2); }}>
-                  <span style={{ color: 'var(--navy-500)' }}><Icon name={j.icon} size={26} stroke={1.75} /></span>
-                  <span>{j.label}</span>
+            <h3 style={s.h3}>How much do you have?</h3>
+            <p style={s.intro}>Priced by the space your stuff takes up in our trailer — like a standard 10ft U-Haul.</p>
+            <div style={s.loadList}>
+              {LOADS.map(l => (
+                <button key={l.id} style={s.loadCard}
+                  onClick={() => { setSel(l); setStep(2); }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--red-500)'; e.currentTarget.style.background = '#FCEFE6'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--paper-300)'; e.currentTarget.style.background = 'var(--surface)'; }}>
+                  <div>
+                    <span style={s.loadLabel}>{l.label}</span>
+                    <span style={s.loadSub}>{l.sub}</span>
+                  </div>
+                  <span style={s.loadPrice}>{priceDisplay(l)}</span>
                 </button>
               ))}
             </div>
-            <div style={s.actions}>
-              <button style={s.ghost} onClick={() => setStep(0)}>← Back</button>
-              <span />
-            </div>
+            <p style={s.note}>Construction or demolition debris (concrete, drywall, tile) adds 20% due to higher landfill fees.</p>
+            <button style={s.ghost} onClick={back(0, true)}>← Back</button>
           </div>
         )}
 
-        {service === 'junk' && step === 2 && (
-          <div style={s.body}>
-            <h3 style={s.h3}>Roughly how much?</h3>
-            <div style={s.loadRow}>
-              {LOADS.map((l) => (
-                <button key={l.id} style={{ ...s.loadBtn, ...(load.id === l.id ? s.loadBtnOn : {}) }}
-                  onClick={() => setLoad(l)}>{l.label}</button>
-              ))}
-            </div>
-            <div style={s.fields}>
-              <div style={{ flex: 1 }}>
-                <label style={s.label}>Name</label>
-                <input style={s.input} value={name} onChange={e => setName(e.target.value)} placeholder="Jane Realtor" />
-              </div>
-              <div style={{ width: 130 }}>
-                <label style={s.label}>Zip</label>
-                <input style={s.input} value={zip} onChange={e => setZip(e.target.value.replace(/\D/g, '').slice(0, 5))} placeholder="83702" />
-              </div>
-            </div>
-            <div style={s.estimate}>
-              <span style={s.estLabel}>Estimate</span>
-              <span style={s.estVal}>${price}</span>
-            </div>
-            <div style={s.actions}>
-              <button style={s.ghost} onClick={() => setStep(1)}>← Back</button>
-              <button style={s.primary} onClick={() => setStep(3)}>See my quote →</button>
-            </div>
-          </div>
-        )}
-
-        {service === 'junk' && step === 3 && (
+        {/* Junk — Step 2: quote + CTA */}
+        {service === 'junk' && step === 2 && sel && (
           <div style={s.body}>
             <div style={s.ticket}>
-              <div style={s.ticketTop}>
-                <span style={s.ticketLbl}>Haul ticket · {ticketNo}</span>
-                <span style={s.ticketStamp}><Icon name="check-circle" size={14} /> Confirmed</span>
-              </div>
-              <div style={s.ticketPrice}>${price}</div>
-              <div style={s.ticketMeta}>{job?.label} · {load.label} · flat rate</div>
-              <div style={s.ticketRow}>{name || 'Customer'} · {zip || 'Boise, ID'}</div>
+              <span style={s.ticketLbl}>Your estimate</span>
+              <div style={s.ticketPrice}>{priceDisplay(sel)}</div>
+              <div style={s.ticketMeta}>{sel.label} · {sel.sub} · flat rate</div>
             </div>
-            <p style={s.confirmNote}>
-              We&rsquo;ll reach out to confirm your day &mdash; usually same or next week.
-              Questions? Call <a href="tel:+12085302729" style={{ color: 'var(--red-500)' }}>(208) 530-2729</a>.
-            </p>
-            <div style={s.actions}>
-              <button style={s.ghost} onClick={() => setStep(2)}>← Adjust</button>
-              <a href="tel:+12085302729" style={{ ...s.primary, textDecoration: 'none', display: 'inline-block' }}>Call to book</a>
+            <div style={s.ctaBlock}>
+              <p style={s.ctaNote}>
+                Text us — your estimate is pre-filled in the message so we know exactly what you need.
+                We typically schedule same or next week.
+              </p>
+              <a href={buildSms('junk', sel)} style={{ ...s.primary, display: 'block', textAlign: 'center', textDecoration: 'none', marginBottom: 10 }}>
+                Text to Book
+              </a>
+              <a href={`tel:${PHONE}`} style={{ ...s.secondary, display: 'block', textAlign: 'center', textDecoration: 'none' }}>
+                Call Instead · {PHONE_DISPLAY}
+              </a>
             </div>
+            <button style={s.ghost} onClick={back(1, true)}>← Change size</button>
           </div>
         )}
 
+        {/* Bin — Step 1: pick plan */}
         {service === 'bin' && step === 1 && (
           <div style={s.body}>
-            <h3 style={s.h3}>Add your bins to the route.</h3>
-            <p style={s.binIntro}>$25 a month, both bins. We come to you after collection day — nothing to remember.</p>
-            <div style={{ ...s.fields, marginBottom: 14 }}>
-              <div style={{ flex: 1 }}>
-                <label style={s.label}>Name</label>
-                <input style={s.input} value={name} onChange={e => setName(e.target.value)} placeholder="Jane Neighbour" />
-              </div>
+            <h3 style={s.h3}>Choose your plan.</h3>
+            <p style={s.intro}>We sanitize both bins (trash + recycle) at your curb after collection day — nothing for you to do.</p>
+            <div style={s.planList}>
+              {PLANS.map(p => (
+                <button key={p.id} style={s.planCard}
+                  onClick={() => { setSel(p); setStep(2); }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--red-500)'; e.currentTarget.style.background = '#FCEFE6'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--paper-300)'; e.currentTarget.style.background = 'var(--surface)'; }}>
+                  <div>
+                    <div style={s.planLabelRow}>
+                      <span style={s.planLabel}>{p.label}</span>
+                      {p.badge && <span style={s.badge}>{p.badge}</span>}
+                    </div>
+                    <span style={s.planSub}>{p.sub}</span>
+                  </div>
+                  <span style={s.planPrice}>${p.price}<span style={s.planUnit}>{p.unit}</span></span>
+                </button>
+              ))}
             </div>
-            <div style={{ marginBottom: 14 }}>
-              <label style={s.label}>Address</label>
-              <input style={s.input} value={addr} onChange={e => setAddr(e.target.value)} placeholder="412 Maple Ave" />
-            </div>
-            <div style={{ ...s.fields, marginBottom: 22 }}>
-              <div style={{ width: 150 }}>
-                <label style={s.label}>Zip</label>
-                <input style={s.input} value={zip} onChange={e => setZip(e.target.value.replace(/\D/g, '').slice(0, 5))} placeholder="83702" />
-              </div>
-              <div style={s.binPriceTag}>
-                <span style={s.binPriceTagLbl}>Monthly</span>
-                <span style={s.binPriceTagVal}>$25<span style={s.binPriceTagUnit}>/mo</span></span>
-              </div>
-            </div>
-            <div style={s.actions}>
-              <button style={s.ghost} onClick={() => setStep(0)}>← Back</button>
-              <button style={{ ...s.primary, ...(!name || !addr || !zip ? s.primaryOff : {}) }}
-                onClick={() => (name && addr && zip) && setStep(2)}>Add me to the route</button>
-            </div>
+            <button style={s.ghost} onClick={back(0, true)}>← Back</button>
           </div>
         )}
 
-        {service === 'bin' && step === 2 && (
+        {/* Bin — Step 2: quote + CTA */}
+        {service === 'bin' && step === 2 && sel && (
           <div style={s.body}>
             <div style={s.ticket}>
-              <div style={s.ticketTop}>
-                <span style={s.ticketLbl}>Route card · {routeNo}</span>
-                <span style={s.ticketStamp}><Icon name="check-circle" size={14} /> On the route</span>
-              </div>
-              <div style={s.ticketPrice}>$25<span style={s.ticketPriceUnit}>/mo</span></div>
-              <div style={s.ticketMeta}>Both bins · monthly · {zip || '83702'}</div>
-              <div style={s.ticketRow}>{name || 'Neighbour'} · {addr || 'your address'}</div>
+              <span style={s.ticketLbl}>Your plan</span>
+              <div style={s.ticketPrice}>${sel.price}<span style={s.ticketUnit}>{sel.unit}</span></div>
+              <div style={s.ticketMeta}>{sel.label} · both bins · Treasure Valley</div>
             </div>
-            <p style={s.confirmNote}>
-              We&rsquo;ll confirm your first clean by text &mdash; then it&rsquo;s every month, like clockwork.
-              Questions? Call <a href="tel:+12085302729" style={{ color: 'var(--red-500)' }}>(208) 530-2729</a>.
-            </p>
-            <div style={s.actions}>
-              <button style={s.ghost} onClick={() => setStep(1)}>← Adjust</button>
-              <a href="tel:+12085302729" style={{ ...s.primary, textDecoration: 'none', display: 'inline-block' }}>Call to confirm</a>
+            <div style={s.ctaBlock}>
+              <p style={s.ctaNote}>
+                Text us your address to get on the route. Your plan details are pre-filled in the message.
+              </p>
+              <a href={buildSms('bin', sel)} style={{ ...s.primary, display: 'block', textAlign: 'center', textDecoration: 'none', marginBottom: 10 }}>
+                Text to Book
+              </a>
+              <a href={`tel:${PHONE}`} style={{ ...s.secondary, display: 'block', textAlign: 'center', textDecoration: 'none' }}>
+                Call Instead · {PHONE_DISPLAY}
+              </a>
             </div>
+            <button style={s.ghost} onClick={back(1, true)}>← Change plan</button>
           </div>
         )}
+
       </div>
     </div>
   );
 }
 
 const s = {
-  overlay: { position: 'fixed', inset: 0, background: 'rgba(43,38,32,0.55)', backdropFilter: 'blur(3px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 20 },
-  modal: { width: 560, maxWidth: '100%', background: 'var(--paper-50)', border: '2px solid var(--paper-300)', borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-lg)', overflow: 'hidden' },
-  head: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 22px', borderBottom: '1px solid var(--paper-300)', background: 'var(--paper-100)' },
-  steps: { display: 'flex', gap: 8 },
-  stepDot: { fontFamily: 'var(--font-head)', fontSize: 12, fontWeight: 600, letterSpacing: '.06em', textTransform: 'uppercase', color: 'var(--gray-400)', padding: '5px 12px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--paper-300)' },
-  stepDotOn: { color: 'var(--cream)', background: 'var(--red-500)', borderColor: 'var(--red-500)' },
-  close: { background: 'transparent', border: 'none', color: 'var(--ink-700)', cursor: 'pointer', display: 'inline-flex' },
-  body: { padding: '26px 30px 30px' },
-  h3: { fontFamily: 'var(--font-display)', fontSize: 30, color: 'var(--ink-900)', margin: '0 0 22px' },
-  serviceGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 },
-  serviceBtn: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: '24px 22px', background: 'var(--surface)', border: '1.5px solid var(--paper-300)', borderRadius: 'var(--radius-md)', cursor: 'pointer', textAlign: 'left', transition: 'border-color .15s, background .15s' },
-  serviceIcon: { color: 'var(--navy-500)', marginBottom: 12, display: 'block' },
-  serviceLabel: { display: 'block', width: '100%', fontFamily: 'var(--font-head)', fontSize: 17, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.01em', color: 'var(--ink-900)', lineHeight: 1.15 },
-  serviceSub: { display: 'block', width: '100%', fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--ink-700)', marginTop: 6 },
-  serviceMeta: { display: 'block', width: '100%', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--red-600)', letterSpacing: '.02em', marginTop: 8 },
-  jobGrid: { display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginBottom: 22 },
-  jobBtn: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 11, padding: '22px 10px', background: 'var(--surface)', border: '1.5px solid var(--paper-300)', borderRadius: 'var(--radius-md)', color: 'var(--ink-900)', fontFamily: 'var(--font-head)', fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '.02em', cursor: 'pointer', transition: 'all .15s' },
-  jobBtnOn: { borderColor: 'var(--red-500)', background: '#FCEFE6' },
-  loadRow: { display: 'flex', gap: 10, marginBottom: 24 },
-  loadBtn: { flex: 1, padding: '13px 8px', background: 'var(--surface)', border: '1.5px solid var(--paper-300)', borderRadius: 'var(--radius-md)', color: 'var(--ink-700)', fontFamily: 'var(--font-head)', fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '.02em', cursor: 'pointer', transition: 'all .15s' },
-  loadBtnOn: { borderColor: 'var(--red-500)', color: 'var(--ink-900)', background: '#FCEFE6' },
-  fields: { display: 'flex', gap: 14, marginBottom: 22 },
-  label: { display: 'block', fontFamily: 'var(--font-head)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--ink-700)', marginBottom: 7 },
-  input: { width: '100%', boxSizing: 'border-box', background: 'var(--surface)', border: '1.5px solid var(--gray-300)', borderRadius: 'var(--radius-sm)', color: 'var(--ink-900)', fontFamily: 'var(--font-sans)', fontSize: 15, padding: '11px 12px' },
-  binIntro: { fontFamily: 'var(--font-sans)', fontSize: 15, lineHeight: 1.55, color: 'var(--ink-700)', margin: '0 0 22px' },
-  binPriceTag: { marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'flex-end' },
-  binPriceTagLbl: { fontFamily: 'var(--font-head)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--ink-700)' },
-  binPriceTagVal: { fontFamily: 'var(--font-display)', fontSize: 30, color: 'var(--red-500)', lineHeight: 1 },
-  binPriceTagUnit: { fontFamily: 'var(--font-head)', fontSize: 13, fontWeight: 500, color: 'var(--ink-700)' },
-  estimate: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 18px', background: 'var(--paper-200)', border: '1px dashed var(--gray-400)', borderRadius: 'var(--radius-md)', marginBottom: 24 },
-  estLabel: { fontFamily: 'var(--font-head)', fontSize: 13, fontWeight: 600, color: 'var(--ink-700)', textTransform: 'uppercase', letterSpacing: '.06em' },
-  estVal: { fontFamily: 'var(--font-display)', fontSize: 32, color: 'var(--red-500)' },
-  actions: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 14 },
-  ghost: { background: 'transparent', border: 'none', color: 'var(--ink-700)', fontFamily: 'var(--font-head)', fontSize: 15, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '.03em', cursor: 'pointer' },
-  primary: { background: 'var(--red-500)', color: 'var(--cream)', border: 'none', borderRadius: 'var(--radius-sm)', padding: '13px 28px', fontFamily: 'var(--font-head)', fontWeight: 600, fontSize: 15, textTransform: 'uppercase', letterSpacing: '.04em', cursor: 'pointer', boxShadow: '0 3px 0 var(--red-700)' },
-  primaryOff: { opacity: 0.4, boxShadow: 'none', cursor: 'not-allowed' },
-  ticket: { background: 'var(--surface)', borderRadius: 'var(--radius-lg)', padding: '24px 26px', color: 'var(--ink-900)', border: '1px solid var(--paper-300)' },
-  ticketTop: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-  ticketLbl: { fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--ink-700)', textTransform: 'uppercase', letterSpacing: '.05em' },
-  ticketStamp: { display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--positive)' },
-  ticketPrice: { fontFamily: 'var(--font-display)', fontSize: 52, color: 'var(--ink-900)', margin: '8px 0 2px' },
-  ticketPriceUnit: { fontFamily: 'var(--font-head)', fontSize: 20, fontWeight: 500, color: 'var(--ink-700)', letterSpacing: '.02em' },
-  ticketMeta: { fontFamily: 'var(--font-mono)', fontSize: 12.5, color: 'var(--ink-700)' },
-  ticketRow: { fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--ink-700)', borderTop: '1px dashed var(--gray-400)', marginTop: 16, paddingTop: 12, textTransform: 'uppercase', letterSpacing: '.03em' },
-  confirmNote: { fontFamily: 'var(--font-sans)', fontSize: 15, lineHeight: 1.55, color: 'var(--ink-700)', margin: '22px 0 24px' },
+  overlay:      { position: 'fixed', inset: 0, background: 'rgba(43,38,32,.55)', backdropFilter: 'blur(3px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 20 },
+  modal:        { width: 540, maxWidth: '100%', background: 'var(--paper-50)', border: '2px solid var(--paper-300)', borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-lg)', overflow: 'hidden' },
+  head:         { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 22px', borderBottom: '1px solid var(--paper-300)', background: 'var(--paper-100)' },
+  brand:        { fontFamily: 'var(--font-head)', fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--ink-700)' },
+  close:        { background: 'transparent', border: 'none', color: 'var(--ink-700)', cursor: 'pointer', display: 'inline-flex', padding: 4 },
+  body:         { padding: '26px 28px 28px' },
+  h3:           { fontFamily: 'var(--font-display)', fontSize: 28, color: 'var(--ink-900)', margin: '0 0 8px' },
+  intro:        { fontFamily: 'var(--font-sans)', fontSize: 14, lineHeight: 1.55, color: 'var(--ink-700)', margin: '0 0 18px' },
+  orCall:       { fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--ink-700)', margin: '18px 0 0', textAlign: 'center' },
+  phoneLink:    { color: 'var(--red-500)', fontWeight: 600, textDecoration: 'none' },
+
+  /* Service picker */
+  serviceGrid:  { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 4 },
+  serviceBtn:   { display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: '22px 20px', background: 'var(--surface)', border: '1.5px solid var(--paper-300)', borderRadius: 'var(--radius-md)', cursor: 'pointer', textAlign: 'left', transition: 'border-color .15s, background .15s' },
+  serviceIcon:  { color: 'var(--navy-500)', marginBottom: 10, display: 'block' },
+  serviceLabel: { display: 'block', fontFamily: 'var(--font-head)', fontSize: 16, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.01em', color: 'var(--ink-900)', lineHeight: 1.2 },
+  serviceSub:   { display: 'block', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--ink-700)', marginTop: 5 },
+  serviceMeta:  { display: 'block', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--red-600)', letterSpacing: '.03em', marginTop: 8 },
+
+  /* Load cards */
+  loadList:     { display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 14 },
+  loadCard:     { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 18px', background: 'var(--surface)', border: '1.5px solid var(--paper-300)', borderRadius: 'var(--radius-md)', cursor: 'pointer', textAlign: 'left', transition: 'border-color .15s, background .15s', width: '100%' },
+  loadLabel:    { display: 'block', fontFamily: 'var(--font-head)', fontSize: 15, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.01em', color: 'var(--ink-900)' },
+  loadSub:      { display: 'block', fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--ink-700)', marginTop: 3 },
+  loadPrice:    { fontFamily: 'var(--font-display)', fontSize: 22, color: 'var(--red-500)', whiteSpace: 'nowrap', marginLeft: 12 },
+  note:         { fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--ink-600)', lineHeight: 1.5, margin: '0 0 20px', padding: '10px 14px', background: 'var(--paper-200)', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid var(--paper-400)' },
+
+  /* Plan cards */
+  planList:     { display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 },
+  planCard:     { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 18px', background: 'var(--surface)', border: '1.5px solid var(--paper-300)', borderRadius: 'var(--radius-md)', cursor: 'pointer', textAlign: 'left', transition: 'border-color .15s, background .15s', width: '100%' },
+  planLabelRow: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 },
+  planLabel:    { fontFamily: 'var(--font-head)', fontSize: 15, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.01em', color: 'var(--ink-900)' },
+  planSub:      { display: 'block', fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--ink-700)' },
+  planPrice:    { fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--red-500)', whiteSpace: 'nowrap', marginLeft: 12 },
+  planUnit:     { fontFamily: 'var(--font-head)', fontSize: 12, fontWeight: 500, color: 'var(--ink-700)' },
+  badge:        { display: 'inline-block', fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.05em', color: 'var(--cream)', background: 'var(--red-500)', borderRadius: 'var(--radius-pill)', padding: '2px 8px' },
+
+  /* Quote ticket */
+  ticket:       { background: 'var(--paper-200)', border: '1px dashed var(--gray-400)', borderRadius: 'var(--radius-lg)', padding: '20px 24px', marginBottom: 20 },
+  ticketLbl:    { fontFamily: 'var(--font-mono)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--ink-600)' },
+  ticketPrice:  { fontFamily: 'var(--font-display)', fontSize: 48, color: 'var(--ink-900)', margin: '4px 0 2px', lineHeight: 1 },
+  ticketUnit:   { fontFamily: 'var(--font-head)', fontSize: 18, fontWeight: 500, color: 'var(--ink-700)' },
+  ticketMeta:   { fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--ink-700)', marginTop: 6 },
+
+  /* CTAs */
+  ctaBlock:     { marginBottom: 20 },
+  ctaNote:      { fontFamily: 'var(--font-sans)', fontSize: 14, lineHeight: 1.55, color: 'var(--ink-700)', margin: '0 0 16px' },
+  primary:      { background: 'var(--red-500)', color: 'var(--cream)', border: 'none', borderRadius: 'var(--radius-sm)', padding: '14px 28px', fontFamily: 'var(--font-head)', fontWeight: 700, fontSize: 15, textTransform: 'uppercase', letterSpacing: '.05em', cursor: 'pointer', boxShadow: '0 3px 0 var(--red-700)' },
+  secondary:    { background: 'transparent', color: 'var(--ink-800)', border: '1.5px solid var(--gray-400)', borderRadius: 'var(--radius-sm)', padding: '13px 28px', fontFamily: 'var(--font-head)', fontWeight: 600, fontSize: 14, textTransform: 'uppercase', letterSpacing: '.04em', cursor: 'pointer' },
+  ghost:        { background: 'transparent', border: 'none', color: 'var(--ink-600)', fontFamily: 'var(--font-head)', fontSize: 13, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '.04em', cursor: 'pointer', padding: 0, marginTop: 4 },
+  actions:      { display: 'flex', justifyContent: 'flex-start', marginTop: 8 },
 };
