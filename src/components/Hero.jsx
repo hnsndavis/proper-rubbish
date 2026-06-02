@@ -9,7 +9,7 @@ export default function Hero({ onQuote }) {
           <img src={sealBadge} alt="Proper Rubbish service seal" style={s.seal} />
 
           <div className="eyebrow" style={s.eyebrow}>
-            Treasure Valley&rsquo;s neighbourhood rubbish man — Boise, Meridian, Eagle &amp; beyond
+            Treasure Valley&rsquo;s neighbourhood rubbish man — Nampa, Caldwell, Boise &amp; beyond
           </div>
 
           <div style={s.script}>&ldquo;I want to be your</div>

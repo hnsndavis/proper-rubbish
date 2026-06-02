@@ -107,6 +107,21 @@ export const CITIES = [
     ]
   },
   {
+    slug: 'middleton-id',
+    name: 'Middleton',
+    county: 'Canyon County',
+    title: 'Junk Removal Middleton ID | Proper Rubbish — Canyon County Haul Away',
+    metaDesc: "Proper Rubbish — junk removal & bin cleaning in Middleton, ID. Flat pricing, same-week scheduling. Canyon County locals. Call (208) 530-2729.",
+    h1: 'Junk Removal in Middleton, ID',
+    intro: "Proper Rubbish serves Middleton with fast, flat-rate junk removal and bin cleaning. Canyon County is our home base — that means quick scheduling and local pricing.",
+    faqs: [
+      { q: 'How much does junk removal cost in Middleton, ID?', a: "Flat-rate volume pricing: minimum pickup starts at $165, quarter truckload $225–$275, half truckload $400–$450, full truckload $1,100. We quote you upfront — no surprises." },
+      { q: 'Do you serve all of Middleton?', a: "Yes — all of Middleton including rural properties and acreage. Canyon County is our home base so Middleton pickups are fast and straightforward." },
+      { q: 'How fast can you pick up in Middleton?', a: "Usually same week, often 24–48 hours. Call or text (208) 530-2729 and we'll get you scheduled." },
+      { q: 'Do you offer bin cleaning in Middleton?', a: "Yes — $65 one-time, $35 quarterly, $25/month. Both bins, no contract. We come to you." }
+    ]
+  },
+  {
     slug: 'garden-city-id',
     name: 'Garden City',
     county: 'Ada County',

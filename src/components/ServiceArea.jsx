@@ -7,7 +7,7 @@ const CITIES = [
   { name: 'Caldwell', href: '/junk-removal-caldwell-id' },
   { name: 'Kuna', href: '/junk-removal-kuna-id' },
   { name: 'Garden City', href: '/junk-removal-garden-city-id' },
-  { name: 'Middleton' },
+  { name: 'Middleton', href: '/junk-removal-middleton-id' },
   { name: 'Emmett' },
 ];
 
