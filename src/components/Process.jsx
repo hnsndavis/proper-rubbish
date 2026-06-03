@@ -10,7 +10,7 @@ export default function Process() {
       <div style={s.inner}>
         <div className="eyebrow" style={{ marginBottom: 12 }}>How it works</div>
         <h2 style={s.h2}>Three steps. No surprises.</h2>
-        <div style={s.grid}>
+        <div style={s.grid} className="rg-3">
           {STEPS.map((st, i) => (
             <div key={st.n} style={s.step}>
               <div style={s.numRow}>

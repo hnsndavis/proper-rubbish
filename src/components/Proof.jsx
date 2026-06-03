@@ -18,7 +18,7 @@ export default function Proof() {
           <span style={s.name}>Margaret Ellison</span>
           <span style={s.role}>Realtor &middot; North End, Boise</span>
         </div>
-        <div style={s.stats}>
+        <div style={s.stats} className="rg-4">
           {stats.map((st) => (
             <div key={st.l} style={s.stat}>
               <div style={s.statV}>{st.v}</div>

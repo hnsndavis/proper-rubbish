@@ -30,7 +30,7 @@ export default function Services({ onQuote }) {
           </p>
         </div>
 
-        <div style={s.grid}>
+        <div style={s.grid} className="rg-3">
           {SERVICES.map((sv) => (
             <div key={sv.n} style={s.card}
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = 'var(--shadow-lg)'; }}
@@ -50,7 +50,7 @@ export default function Services({ onQuote }) {
             <span style={s.stepsKicker}>How a haul works</span>
             <span style={s.stepsRule} />
           </div>
-          <div style={s.stepsGrid}>
+          <div style={s.stepsGrid} className="rg-3">
             {HAUL_STEPS.map((st, i) => (
               <div key={st.n} style={s.step}>
                 <div style={s.numRow}>

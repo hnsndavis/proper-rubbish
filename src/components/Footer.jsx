@@ -42,7 +42,7 @@ export default function Footer({ onQuote }) {
         </div>
       </div>
       <div className="on-ink" style={s.main}>
-        <div style={s.cols}>
+        <div style={s.cols} className="rg-footer">
           <div style={s.brandCol}>
             <img src={patchOval} alt="Proper Rubbish" style={{ width: 200 }} />
             <p style={s.tag}>Proper job. Every time.</p>
@@ -87,5 +87,5 @@ const s = {
   colH: { fontFamily: 'var(--font-head)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--red-400)', marginBottom: 4 },
   colLink: { fontFamily: 'var(--font-sans)', fontSize: 14.5, color: '#C9C1B2', textDecoration: 'none' },
   contact: { display: 'flex', alignItems: 'center', gap: 9, fontFamily: 'var(--font-sans)', fontSize: 14, color: '#C9C1B2', textDecoration: 'none' },
-  legal: { maxWidth: 'var(--container)', margin: '0 auto', padding: '20px var(--gutter)', borderTop: '1px solid rgba(251,245,233,0.14)', display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--gray-500)' },
+  legal: { maxWidth: 'var(--container)', margin: '0 auto', padding: '20px var(--gutter)', borderTop: '1px solid rgba(251,245,233,0.14)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px 16px', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--gray-500)' },
 };

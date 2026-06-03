@@ -158,3 +158,16 @@ html, body { margin: 0; padding: 0; }
 .pjc a{color:var(--accent);text-decoration:none;text-underline-offset:3px;transition:color var(--dur-fast) var(--ease-out)}
 .pjc a:hover{color:var(--accent-hover);text-decoration:underline}
 ::selection{background:var(--red-500);color:var(--cream)}
+
+/* ─── Responsive grid utilities ──────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .rg-2      { grid-template-columns: 1fr !important; }
+  .rg-3      { grid-template-columns: 1fr !important; }
+  .rg-4      { grid-template-columns: repeat(2,1fr) !important; }
+  .rg-5      { grid-template-columns: repeat(2,1fr) !important; }
+  .rg-footer { grid-template-columns: repeat(2,1fr) !important; gap: 32px !important; }
+}
+@media (max-width: 479px) {
+  .rg-4      { grid-template-columns: repeat(2,1fr) !important; }
+  .rg-footer { grid-template-columns: 1fr !important; }
+}

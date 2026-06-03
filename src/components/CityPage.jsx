@@ -50,7 +50,7 @@ export default function CityPage({ city, onQuote }) {
           <div style={s.inner}>
             <div className="eyebrow" style={{ marginBottom: 12 }}>What we haul in {city.name}</div>
             <h2 style={s.h2}>Junk removal, done right.</h2>
-            <div style={s.grid}>
+            <div style={s.grid} className="rg-3">
               {SERVICES.map(sv => (
                 <div key={sv.title} style={s.card}>
                   <span style={{ color: 'var(--navy-500)', marginBottom: 14, display: 'block' }}>
@@ -70,7 +70,7 @@ export default function CityPage({ city, onQuote }) {
             <div className="eyebrow" style={{ marginBottom: 12 }}>Pricing</div>
             <h2 style={s.h2}>Flat rates. No surprises.</h2>
             <p style={s.pricingIntro}>Pricing is based on the space your junk takes up in our 15 cu yd trailer. You get the number before we start.</p>
-            <div style={s.priceGrid}>
+            <div style={s.priceGrid} className="rg-5">
               {LOADS.map(l => (
                 <div key={l.label} style={s.priceCard}>
                   <div style={s.priceLabel}>{l.label}</div>
@@ -88,7 +88,7 @@ export default function CityPage({ city, onQuote }) {
           <div style={s.inner}>
             <div className="eyebrow" style={{ color: 'var(--red-400)', marginBottom: 12 }}>Why Proper Rubbish</div>
             <h2 style={s.whyH2}>The {city.name} crew that actually shows up.</h2>
-            <div style={s.whyGrid}>
+            <div style={s.whyGrid} className="rg-4">
               {WHY.map(w => (
                 <div key={w.title} style={s.whyCard}>
                   <span style={{ color: 'var(--red-400)', marginBottom: 12, display: 'block' }}>

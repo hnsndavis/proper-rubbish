@@ -70,7 +70,7 @@ export default function BinCleaning({ onQuote }) {
   return (
     <section id="bin-cleaning" className="on-navy" style={s.wrap}>
       <div style={s.inner}>
-        <div style={s.top}>
+        <div style={s.top} className="rg-2">
           <div style={s.left}>
             <div className="eyebrow" style={s.eyebrow}>Bin Cleaning &middot; monthly route</div>
             <h2 style={s.h2}>Add your bins<br />to the route.</h2>
@@ -90,7 +90,7 @@ export default function BinCleaning({ onQuote }) {
             <span style={s.stepsKicker}>How the route works</span>
             <span style={s.stepsRule} />
           </div>
-          <div style={s.stepsGrid}>
+          <div style={s.stepsGrid} className="rg-3">
             {ROUTE_STEPS.map((st, i) => (
               <div key={st.n} style={s.step}>
                 <div style={s.numRow}>
